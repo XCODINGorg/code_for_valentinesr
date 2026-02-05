@@ -92,13 +92,28 @@ button{
 /* IMAGE CONTAINER */
 .image-wrapper{
     position:absolute;
-    animation:floatAround 8s ease-in-out infinite;
 }
 
-/* ORIGINAL IMAGE – UNTOUCHED */
+/* Floating animation for side images */
+.image-wrapper.float-left{
+    animation:floatDownRight 8s ease-in-out infinite;
+}
+
+.image-wrapper.float-right{
+    animation:floatUpLeft 8s ease-in-out infinite;
+}
+
+/* Center image - only glow effect */
+.image-wrapper.glow-center{
+    animation:glowPulse 3s ease-in-out infinite;
+}
+
+/* ORIGINAL IMAGE – SQUARE CROP */
 .image-wrapper img{
-    max-width:200px;
-    height:auto;
+    width:250px;
+    height:250px;
+    object-fit:cover;
+    object-position:center;
     border-radius:15px;
     display:block;
     box-shadow:0 15px 35px rgba(0,0,0,.3);
@@ -115,10 +130,24 @@ button{
     50%{transform:scale(1.3);}
 }
 
-/* FLOAT */
-@keyframes floatAround{
+/* FLOAT ANIMATIONS */
+@keyframes floatUpLeft{
     0%,100%{transform:translate(0,0);}
-    50%{transform:translate(20px,-30px);}
+    50%{transform:translate(-30px,-40px);}
+}
+
+@keyframes floatDownRight{
+    0%,100%{transform:translate(0,0);}
+    50%{transform:translate(30px,40px);}
+}
+
+@keyframes glowPulse{
+    0%,100%{
+        filter:drop-shadow(0 0 10px rgba(255,255,255,0.3));
+    }
+    50%{
+        filter:drop-shadow(0 0 30px rgba(255,107,157,0.8)) drop-shadow(0 0 50px rgba(255,107,157,0.5));
+    }
 }
 
 /* ================= HEART RAIN ================= */
@@ -466,6 +495,16 @@ button{
 .letter-paper::-webkit-scrollbar-thumb:hover {
     background: #c44569;
 }
+
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .image-wrapper img{
+        width: 180px;
+        height: 180px;
+    }
+    
+    /* Mobile positioning handled in JavaScript */
+}
 </style>
 </head>
 
@@ -597,7 +636,7 @@ button{
 <audio id="mozartPiano" src="mozart_piano.mp3" loop></audio>
 
 <script>
-const images = ["p1.jpeg","p2.jpeg","p3.jpeg","p4.jpeg"];
+const images = ["p2.jpeg","p3.jpeg","p4.jpeg"];
 
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
@@ -614,18 +653,18 @@ const giftLid = document.getElementById("giftLid");
 const letter = document.getElementById("letterScreen");
 const romantic = document.getElementById("romanticMusic");
 
-/* 🎵 FORCE MUSIC ASAP (BEST POSSIBLE WAY) */
-window.addEventListener("load", () => {
-    romantic.volume = 0.9;
-    romantic.muted = true;
-    romantic.play().then(() => {
-        setTimeout(() => romantic.muted = false, 500);
-    }).catch(() => {
-        document.body.addEventListener("click", () => {
-            romantic.muted = false;
-            romantic.play();
-        }, { once: true });
-    });
+/* 🎵 AUTO-PLAY MUSIC ON PAGE LOAD */
+// Try to play immediately
+romantic.volume = 0.6;
+romantic.play().catch(() => {
+    // If blocked by browser, play on first user interaction
+    const playOnInteraction = () => {
+        romantic.play();
+        document.removeEventListener("click", playOnInteraction);
+        document.removeEventListener("touchstart", playOnInteraction);
+    };
+    document.addEventListener("click", playOnInteraction);
+    document.addEventListener("touchstart", playOnInteraction);
 });
 
 /* 😈 NO BUTTON */
@@ -647,7 +686,7 @@ yesBtn.onclick = () => {
     question.classList.add("hidden");
     celebration.classList.add("active");
 
-    /* HEART RAIN */
+     /* HEART RAIN*/
     setInterval(() => {
         const h = document.createElement("div");
         h.className = "heart";
@@ -658,20 +697,42 @@ yesBtn.onclick = () => {
         setTimeout(() => h.remove(), 10000);
     }, 300);
 
-    /* 🌸 TRUE CENTER FLOATING 🌸 */
-    const centerX = 50;
-    const centerY = 50;
-    const radius = 12; // small radius so everything stays CENTER
+    /* 🌸 SPECIFIC POSITIONS - 3 IMAGES 🌸 */
+    // Check if mobile
+    const isMobile = window.innerWidth <= 768;
+    
+    // Desktop positions
+    // p2.jpeg (index 0) - Left side
+    // p3.jpeg (index 1) - Right side  
+    // p4.jpeg (index 2) - Center
+    const desktopPositions = [
+        { left: 15, top: 50, class: 'float-left' },   // p2.jpeg - Left side (floats down-right)
+        { left: 85, top: 50, class: 'float-right' },  // p3.jpeg - Right side (floats up-left)
+        { left: 50, top: 50, class: 'glow-center' }   // p4.jpeg - Center (only glows)
+    ];
+    
+    // Mobile positions
+    // p2.jpeg (index 0) - Bottom
+    // p3.jpeg (index 1) - Top  
+    // p4.jpeg (index 2) - Center
+    const mobilePositions = [
+        { left: 50, top: 80, class: 'float-left' },   // p2.jpeg - Bottom (floats down-right)
+        { left: 50, top: 20, class: 'float-right' },  // p3.jpeg - Top (floats up-left)
+        { left: 50, top: 50, class: 'glow-center' }   // p4.jpeg - Center (only glows)
+    ];
+    
+    const positions = isMobile ? mobilePositions : desktopPositions;
 
     images.forEach((src, i) => {
         const wrap = document.createElement("div");
         wrap.className = "image-wrapper";
+        
+        // Add specific animation class
+        const pos = positions[i];
+        wrap.classList.add(pos.class);
 
-        // evenly spaced around a tiny circle at CENTER
-        const angle = (i / images.length) * Math.PI * 2;
-
-        wrap.style.left = (centerX + radius * Math.cos(angle)) + "%";
-        wrap.style.top  = (centerY + radius * Math.sin(angle)) + "%";
+        wrap.style.left = pos.left + "%";
+        wrap.style.top  = pos.top + "%";
         wrap.style.transform = "translate(-50%, -50%)";
         wrap.style.zIndex = 20 + i;
         wrap.style.animationDelay = i * 0.6 + "s";
