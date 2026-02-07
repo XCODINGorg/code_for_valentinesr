@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💕 Will You Be My Valentine? 💕</title>
+<title>ðŸ’• Will You Be My Valentine? ðŸ’•</title>
 
 <style>
 *{
@@ -108,7 +108,7 @@ button{
     animation:glowPulse 3s ease-in-out infinite;
 }
 
-/* ORIGINAL IMAGE – SQUARE CROP */
+/* ORIGINAL IMAGE â€“ SQUARE CROP */
 .image-wrapper img{
     width:250px;
     height:250px;
@@ -500,6 +500,270 @@ button{
 @media (max-width: 768px) {
     .image-wrapper img{
         width: 180px;
+        height: 180px;
+    }
+    
+    /* Mobile positioning handled in JavaScript */
+}
+</style>
+</head>
+
+<body>
+
+<div class="question-container" id="questionScreen">
+    <h1>ðŸ’• A Special Question ðŸ’•</h1>
+    <p class="question-text">Will you be my Valentine? ðŸ’</p>
+    <div class="button-container">
+        <button class="yes-btn" id="yesBtn">Yes ðŸ’•</button>
+        <button class="no-btn" id="noBtn">No</button>
+    </div>
+</div>
+
+<div class="celebration-container" id="celebrationScreen">
+    <div class="floating-images" id="floatingImages"></div>
+    <div class="hearts-container" id="heartsContainer"></div>
+</div>
+
+<div class="surprise-card" id="surpriseCard">
+    <h2>ðŸŽ‰ One More Thingâ€¦ ðŸŽ‰</h2>
+    <p style="margin: 20px 0; font-size: 1.1rem;">I have a special gift for you...</p>
+    <button class="yes-btn" id="revealBtn">Continue ðŸ’</button>
+</div>
+
+<div class="gift-opening-container" id="giftOpening">
+    <div class="gift-scene" id="giftScene">
+        <!-- Gift Lid -->
+        <div class="gift-lid" id="giftLid">
+            <div class="bow">ðŸŽ€</div>
+            <div class="lid-face lid-top"></div>
+            <div class="lid-face lid-front"></div>
+            <div class="lid-face lid-back"></div>
+            <div class="lid-face lid-right"></div>
+            <div class="lid-face lid-left"></div>
+        </div>
+        
+        <!-- Gift Box -->
+        <div class="gift-box" id="giftBox">
+            <div class="box-face box-front"></div>
+            <div class="box-face box-back"></div>
+            <div class="box-face box-right"></div>
+            <div class="box-face box-left"></div>
+            <div class="box-face box-top"></div>
+            <div class="box-face box-bottom"></div>
+            
+            <!-- Ribbons -->
+            <div class="ribbon ribbon-vertical"></div>
+            <div class="ribbon ribbon-horizontal"></div>
+            
+            <!-- Letter emerging from box -->
+            <div class="letter-paper-emerging" id="letterEmerging">
+                <div style="padding: 15px; font-size: 0.7rem; color: #d63384;">
+                    <div style="text-align: center; margin-bottom: 8px; font-size: 0.9rem;">ðŸ’•</div>
+                    <div style="font-weight: bold; margin-bottom: 5px;">My Love</div>
+                    <div style="line-height: 1.4;">A special message awaits...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="click-instruction">Click the gift to open! ðŸŽ</div>
+</div>
+
+<div class="letter-container" id="letterScreen">
+    <div class="letter-paper">
+        <h2>For You ðŸ’•</h2>
+        <div class="poem">
+            <p class="stanza">
+                You are the careful change in air,<br>
+                the pause before the trees begin again.<br>
+                Nothing announces itself,<br>
+                yet the ground softens all the same.<br>
+                Small things turn toward where you are,<br>
+                as if beginning learned your name.<br>
+                What once stayed closed loosens slowly,<br>
+                and does not return the same.
+            </p>
+
+            <p class="stanza">
+                You are the long light that refuses to leave,<br>
+                the heat that settles under skin.<br>
+                Days stretch thin thinking of you,<br>
+                sleep forgets how to begin.<br>
+                Shadows stay awake longer now,<br>
+                even silence learns to remain.<br>
+                Want grows quietly, without hurry,<br>
+                like thirst that does not complain.
+            </p>
+
+            <p class="stanza">
+                You are the rain that changes weight,<br>
+                first a touch, then everywhere.<br>
+                Thoughts grow dense, the hours slow,<br>
+                nothing dries in your care.<br>
+                Roads remember where you pass,<br>
+                windows hold your sound within.<br>
+                What enters gently stays completely,<br>
+                and soaks the ribs and bone and skin.
+            </p>
+
+            <p class="stanza">
+                You are the balance after excess,<br>
+                the air that knows what to keep.<br>
+                What falls away was never yours,<br>
+                what remains is chosen, deep.<br>
+                Love learns shape, not urgency,<br>
+                it sits, it breathes, it stays.<br>
+                No need for proof or promises,<br>
+                only quiet, steady days.
+            </p>
+
+            <p class="stanza">
+                You are the warmth that asks for nothing,<br>
+                the room where cold makes sense.<br>
+                Stillness rests without effort here,<br>
+                time loosens its defense.<br>
+                If meaning ever seeks a place<br>
+                to settle, calm and true,<br>
+                it will not look beyond this point.<br>
+                It will stop,<br>
+                with you.
+            </p>
+        </div>
+    </div>
+</div>
+
+<audio id="romanticMusic" src="Zulfein.mp3" loop></audio>
+<audio id="mozartPiano" src="mozart_piano.mp3" loop></audio>
+
+<script>
+const images = ["p2.jpeg","p3.jpeg","p4.jpeg"];
+
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const floatingImages = document.getElementById("floatingImages");
+const hearts = document.getElementById("heartsContainer");
+const question = document.getElementById("questionScreen");
+const celebration = document.getElementById("celebrationScreen");
+const surprise = document.getElementById("surpriseCard");
+const reveal = document.getElementById("revealBtn");
+const gift = document.getElementById("giftOpening");
+const giftScene = document.getElementById("giftScene");
+const giftBox = document.getElementById("giftBox");
+const giftLid = document.getElementById("giftLid");
+const letter = document.getElementById("letterScreen");
+const romantic = document.getElementById("romanticMusic");
+
+/* ðŸŽµ AUTO-PLAY MUSIC ON PAGE LOAD */
+// Try to play immediately
+romantic.volume = 0.6;
+romantic.play().catch(() => {
+    // If blocked by browser, play on first user interaction
+    const playOnInteraction = () => {
+        romantic.play();
+        document.removeEventListener("click", playOnInteraction);
+        document.removeEventListener("touchstart", playOnInteraction);
+    };
+    document.addEventListener("click", playOnInteraction);
+    document.addEventListener("touchstart", playOnInteraction);
+});
+
+/* ðŸ˜ˆ NO BUTTON */
+function moveNo() {
+    const maxX = window.innerWidth - noBtn.offsetWidth - 40;
+    const maxY = window.innerHeight - noBtn.offsetHeight - 40;
+    noBtn.style.position = "fixed";
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
+}
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("touchstart", e => {
+    e.preventDefault();
+    moveNo();
+});
+
+/* â¤ï¸ YES CLICK */
+yesBtn.onclick = () => {
+    question.classList.add("hidden");
+    celebration.classList.add("active");
+
+     /* HEART RAIN*/
+    setInterval(() => {
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.innerText = ["â¤ï¸","ðŸ’–","ðŸ’˜","ðŸ’•","ðŸ’—"][Math.floor(Math.random()*5)];
+        h.style.left = Math.random() * 100 + "%";
+        h.style.animationDuration = (Math.random() * 3 + 4) + "s";
+        hearts.appendChild(h);
+        setTimeout(() => h.remove(), 10000);
+    }, 300);
+
+    /* ðŸŒ¸ SPECIFIC POSITIONS - 3 IMAGES ðŸŒ¸ */
+    // Check if mobile
+    const isMobile = window.innerWidth <= 768;
+    
+    // Desktop positions
+    // p2.jpeg (index 0) - Left side
+    // p3.jpeg (index 1) - Right side  
+    // p4.jpeg (index 2) - Center
+    const desktopPositions = [
+        { left: 15, top: 50, class: 'float-left' },   // p2.jpeg - Left side (floats down-right)
+        { left: 85, top: 50, class: 'float-right' },  // p3.jpeg - Right side (floats up-left)
+        { left: 50, top: 50, class: 'glow-center' }   // p4.jpeg - Center (only glows)
+    ];
+    
+    // Mobile positions
+    // p2.jpeg (index 0) - Bottom
+    // p3.jpeg (index 1) - Top  
+    // p4.jpeg (index 2) - Center
+    const mobilePositions = [
+        { left: 50, top: 80, class: 'float-left' },   // p2.jpeg - Bottom (floats down-right)
+        { left: 50, top: 20, class: 'float-right' },  // p3.jpeg - Top (floats up-left)
+        { left: 50, top: 50, class: 'glow-center' }   // p4.jpeg - Center (only glows)
+    ];
+    
+    const positions = isMobile ? mobilePositions : desktopPositions;
+
+    images.forEach((src, i) => {
+        const wrap = document.createElement("div");
+        wrap.className = "image-wrapper";
+        
+        // Add specific animation class
+        const pos = positions[i];
+        wrap.classList.add(pos.class);
+
+        wrap.style.left = pos.left + "%";
+        wrap.style.top  = pos.top + "%";
+        wrap.style.transform = "translate(-50%, -50%)";
+        wrap.style.zIndex = 20 + i;
+        wrap.style.animationDelay = i * 0.6 + "s";
+
+        const img = document.createElement("img");
+        img.src = src;
+        img.onerror = () => img.style.display = "none";
+        wrap.appendChild(img);
+
+        /* HEART BORDER */
+        for (let j = 0; j < 10; j++) {
+            const bh = document.createElement("span");
+            bh.className = "border-heart";
+            bh.innerText = ["â¤ï¸","ðŸ’–","ðŸ’˜","ðŸ’•"][Math.floor(Math.random()*4)];
+            bh.style.top = Math.random() * 100 + "%";
+            bh.style.left = Math.random() * 100 + "%";
+            bh.style.animationDelay = Math.random() * 2 + "s";
+            wrap.appendChild(bh);
+        }
+
+        floatingImages.appendChild(wrap);
+    });
+
+    /* DELAY MESSAGE */
+    setTimeout(() => surprise.classList.add("show"), 6500);
+};
+
+/* ðŸŽ REVEAL GIFT */
+reveal.onclick = () => {
+    surprise.classList.remove("show");
+    gift.classth: 180px;
         height: 180px;
     }
     
@@ -1650,6 +1914,7 @@ giftScene.onclick = () => {
 
 </body>
 </html>
+
 
 
 
