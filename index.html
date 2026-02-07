@@ -656,16 +656,19 @@ const romantic = document.getElementById("romanticMusic");
 /* 🎵 AUTO-PLAY MUSIC ON PAGE LOAD */
 // Try to play immediately
 romantic.volume = 0.6;
-romantic.play().catch(() => {
-    // If blocked by browser, play on first user interaction
-    const playOnInteraction = () => {
-        romantic.play();
-        document.removeEventListener("click", playOnInteraction);
-        document.removeEventListener("touchstart", playOnInteraction);
-    };
-    document.addEventListener("click", playOnInteraction);
-    document.addEventListener("touchstart", playOnInteraction);
-});
+
+function startMusic() {
+    romantic.play().catch(err => {
+        console.log("Playback blocked:", err);
+    });
+
+    // Remove listeners after first attempt
+    document.removeEventListener("click", startMusic);
+    document.removeEventListener("touchstart", startMusic);
+}
+
+document.addEventListener("click", startMusic);
+document.addEventListener("touchstart", startMusic);
 
 /* 😈 NO BUTTON */
 function moveNo() {
@@ -787,3 +790,4 @@ giftScene.onclick = () => {
 
 </body>
 </html>
+
