@@ -772,6 +772,129 @@ reveal.onclick = () => {
 /* 🎁 GIFT OPEN */
 let giftOpened = false;
 const letterEmerging = document.getElementById("letterEmerging");
+<!-- KEEP EVERYTHING ABOVE EXACTLY SAME UNTIL SCRIPT PART -->
+
+<script>
+const images = ["p2.jpeg","p3.jpeg","p4.jpeg"];
+
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const floatingImages = document.getElementById("floatingImages");
+const hearts = document.getElementById("heartsContainer");
+const question = document.getElementById("questionScreen");
+const celebration = document.getElementById("celebrationScreen");
+const surprise = document.getElementById("surpriseCard");
+const reveal = document.getElementById("revealBtn");
+const gift = document.getElementById("giftOpening");
+const giftScene = document.getElementById("giftScene");
+const giftBox = document.getElementById("giftBox");
+const giftLid = document.getElementById("giftLid");
+const letter = document.getElementById("letterScreen");
+const romantic = document.getElementById("romanticMusic");
+
+/* ✅ FIXED MUSIC LOGIC */
+romantic.preload = "auto";
+romantic.volume = 0.6;
+
+function playMusic() {
+    romantic.play().catch(err => {
+        console.log("Playback blocked:", err);
+    });
+}
+
+/* 😈 NO BUTTON */
+function moveNo() {
+    const maxX = window.innerWidth - noBtn.offsetWidth - 40;
+    const maxY = window.innerHeight - noBtn.offsetHeight - 40;
+    noBtn.style.position = "fixed";
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
+}
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("touchstart", e => {
+    e.preventDefault();
+    moveNo();
+});
+
+/* ❤️ YES CLICK */
+yesBtn.onclick = () => {
+
+    playMusic(); // 🔥 music starts correctly here
+
+    question.classList.add("hidden");
+    celebration.classList.add("active");
+
+     /* HEART RAIN*/
+    setInterval(() => {
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.innerText = ["❤️","💖","💘","💕","💗"][Math.floor(Math.random()*5)];
+        h.style.left = Math.random() * 100 + "%";
+        h.style.animationDuration = (Math.random() * 3 + 4) + "s";
+        hearts.appendChild(h);
+        setTimeout(() => h.remove(), 10000);
+    }, 300);
+
+    /* 🌸 SPECIFIC POSITIONS - 3 IMAGES 🌸 */
+    const isMobile = window.innerWidth <= 768;
+
+    const desktopPositions = [
+        { left: 15, top: 50, class: 'float-left' },
+        { left: 85, top: 50, class: 'float-right' },
+        { left: 50, top: 50, class: 'glow-center' }
+    ];
+
+    const mobilePositions = [
+        { left: 50, top: 80, class: 'float-left' },
+        { left: 50, top: 20, class: 'float-right' },
+        { left: 50, top: 50, class: 'glow-center' }
+    ];
+
+    const positions = isMobile ? mobilePositions : desktopPositions;
+
+    images.forEach((src, i) => {
+        const wrap = document.createElement("div");
+        wrap.className = "image-wrapper";
+
+        const pos = positions[i];
+        wrap.classList.add(pos.class);
+
+        wrap.style.left = pos.left + "%";
+        wrap.style.top  = pos.top + "%";
+        wrap.style.transform = "translate(-50%, -50%)";
+        wrap.style.zIndex = 20 + i;
+        wrap.style.animationDelay = i * 0.6 + "s";
+
+        const img = document.createElement("img");
+        img.src = src;
+        img.onerror = () => img.style.display = "none";
+        wrap.appendChild(img);
+
+        for (let j = 0; j < 10; j++) {
+            const bh = document.createElement("span");
+            bh.className = "border-heart";
+            bh.innerText = ["❤️","💖","💘","💕"][Math.floor(Math.random()*4)];
+            bh.style.top = Math.random() * 100 + "%";
+            bh.style.left = Math.random() * 100 + "%";
+            bh.style.animationDelay = Math.random() * 2 + "s";
+            wrap.appendChild(bh);
+        }
+
+        floatingImages.appendChild(wrap);
+    });
+
+    setTimeout(() => surprise.classList.add("show"), 6500);
+};
+
+/* 🎁 REVEAL GIFT */
+reveal.onclick = () => {
+    surprise.classList.remove("show");
+    gift.classList.add("active");
+};
+
+/* 🎁 GIFT OPEN */
+let giftOpened = false;
+const letterEmerging = document.getElementById("letterEmerging");
 
 giftScene.onclick = () => {
     if (giftOpened) return;
@@ -790,4 +913,5 @@ giftScene.onclick = () => {
 
 </body>
 </html>
+
 
