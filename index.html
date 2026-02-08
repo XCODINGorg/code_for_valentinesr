@@ -632,7 +632,7 @@ button{
     </div>
 </div>
 
-<audio id="romanticMusic" src="Zulfein.mp3" loop></audio>
+<audio id="romanticMusic" src="Zulfein.mp3" loop playsinline></audio>
 <audio id="mozartPiano" src="mozart_piano.mp3" loop></audio>
 
 <script>
@@ -653,19 +653,13 @@ const giftLid = document.getElementById("giftLid");
 const letter = document.getElementById("letterScreen");
 const romantic = document.getElementById("romanticMusic");
 
-/* 🎵 AUTO-PLAY MUSIC ON PAGE LOAD */
-// Try to play immediately
+/* 🎵 PLAY MUSIC ON YES TAP (MOBILE-SAFE) */
 romantic.volume = 0.6;
-romantic.play().catch(() => {
-    // If blocked by browser, play on first user interaction
-    const playOnInteraction = () => {
-        romantic.play();
-        document.removeEventListener("click", playOnInteraction);
-        document.removeEventListener("touchstart", playOnInteraction);
-    };
-    document.addEventListener("click", playOnInteraction);
-    document.addEventListener("touchstart", playOnInteraction);
-});
+const startMusic = () => {
+    romantic.play().catch(() => {});
+};
+document.addEventListener("click", startMusic, { once: true });
+document.addEventListener("touchstart", startMusic, { once: true });
 
 /* 😈 NO BUTTON */
 function moveNo() {
@@ -683,6 +677,7 @@ noBtn.addEventListener("touchstart", e => {
 
 /* ❤️ YES CLICK */
 yesBtn.onclick = () => {
+    startMusic();
     question.classList.add("hidden");
     celebration.classList.add("active");
 
