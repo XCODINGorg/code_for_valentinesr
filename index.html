@@ -44,6 +44,17 @@ body{
     max-width:320px;
     width:85%;
 }
+.audio-overlay .audio-btn{
+    margin-top:14px;
+    padding:10px 18px;
+    border:none;
+    border-radius:999px;
+    background:linear-gradient(135deg,#f093fb,#f5576c);
+    color:#fff;
+    font-weight:bold;
+    font-size:1rem;
+    cursor:pointer;
+}
 .audio-overlay .audio-title{
     font-size:1.2rem;
     color:#d63384;
@@ -547,6 +558,7 @@ button{
     <div class="audio-card">
         <div class="audio-title">Tap to Start Music</div>
         <div class="audio-sub">For the best experience on mobile</div>
+        <button class="audio-btn" id="audioOverlayBtn">Start Music</button>
     </div>
 </div>
 
@@ -693,15 +705,25 @@ const giftLid = document.getElementById("giftLid");
 const letter = document.getElementById("letterScreen");
 const romantic = document.getElementById("romanticMusic");
 const audioOverlay = document.getElementById("audioOverlay");
+const audioOverlayBtn = document.getElementById("audioOverlayBtn");
 
 /* 🎵 PLAY MUSIC ON YES TAP (MOBILE-SAFE) */
 romantic.volume = 0.6;
 const startMusic = () => {
-    romantic.play().catch(() => {});
-    audioOverlay.classList.add("hidden");
+    const playPromise = romantic.play();
+    if (playPromise && typeof playPromise.then === "function") {
+        playPromise.then(() => {
+            audioOverlay.classList.add("hidden");
+        }).catch(() => {});
+    } else {
+        audioOverlay.classList.add("hidden");
+    }
 };
 document.addEventListener("click", startMusic, { once: true });
 document.addEventListener("touchstart", startMusic, { once: true });
+audioOverlayBtn.addEventListener("pointerdown", startMusic, { once: true });
+audioOverlayBtn.addEventListener("touchstart", startMusic, { once: true });
+audioOverlayBtn.addEventListener("click", startMusic, { once: true });
 
 /* 😈 NO BUTTON */
 function moveNo() {
